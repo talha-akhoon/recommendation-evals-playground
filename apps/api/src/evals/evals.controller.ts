@@ -1,0 +1,13 @@
+import { Controller, Post, Body } from '@nestjs/common';
+import { EvalsService } from './evals.service.js';
+import type { EvalResult, RunEvalRequest } from '../types/eval.types.js';
+
+@Controller('evals')
+export class EvalsController {
+  constructor(private readonly evalsService: EvalsService) {}
+
+  @Post('run')
+  run(@Body() body: RunEvalRequest): EvalResult {
+    return this.evalsService.runEval(body.scenarioId, body.modelId);
+  }
+}
