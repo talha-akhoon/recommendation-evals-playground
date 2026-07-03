@@ -7,7 +7,7 @@ export class EvalsController {
   constructor(private readonly evalsService: EvalsService) {}
 
   @Post('run')
-  run(@Body() body: RunEvalRequest): EvalResult {
+  run(@Body() body: RunEvalRequest): Promise<EvalResult> {
     return this.evalsService.runEval(body.scenarioId, body.modelId);
   }
 }

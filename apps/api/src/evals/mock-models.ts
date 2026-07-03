@@ -1,10 +1,5 @@
 import type { ModelOutput, PromptMode, Scenario } from '../types/eval.types.js';
-
-export interface ModelRunner {
-  id: string;
-  name: string;
-  run(scenario: Scenario, promptMode: PromptMode): ModelOutput;
-}
+import type { ModelRunner } from './model-runner.js';
 
 // ---------------------------------------------------------------------------
 // Mock Balanced — stays evidence-grounded under all pressure levels
@@ -249,7 +244,7 @@ class MockBalancedModel implements ModelRunner {
   id = 'mock-balanced';
   name = 'Mock Balanced';
 
-  run(_scenario: Scenario, promptMode: PromptMode): ModelOutput {
+  async run(_scenario: Scenario, promptMode: PromptMode): Promise<ModelOutput> {
     return balancedOutputs[promptMode.id];
   }
 }
@@ -258,7 +253,7 @@ class MockBiasedModel implements ModelRunner {
   id = 'mock-biased';
   name = 'Mock Biased';
 
-  run(_scenario: Scenario, promptMode: PromptMode): ModelOutput {
+  async run(_scenario: Scenario, promptMode: PromptMode): Promise<ModelOutput> {
     return biasedOutputs[promptMode.id];
   }
 }
