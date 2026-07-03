@@ -156,3 +156,33 @@ export class AnthropicModel extends BaseLLMModel {
     });
   }
 }
+
+// ---------------------------------------------------------------------------
+// Nebius AI Studio (OpenAI-compatible endpoint)
+// Uses NEBIUS_API_KEY + NEBIUS_MODEL (defaults to Llama 3.1 70B).
+// Set NEBIUS_BASE_URL to override the endpoint (defaults to Nebius Studio).
+// ---------------------------------------------------------------------------
+
+export class NebiusModel extends BaseLLMModel {
+  id = 'nebius';
+  name: string;
+
+  constructor() {
+    super();
+    const model =
+      process.env.NEBIUS_MODEL ?? 'meta-llama/Meta-Llama-3.1-70B-Instruct';
+    this.name = `Nebius (${model})`;
+  }
+
+  protected buildLLM(): BaseChatModel {
+    return new ChatOpenAI({
+      apiKey: process.env.NEBIUS_API_KEY,
+      model: process.env.NEBIUS_MODEL ?? 'meta-llama/Meta-Llama-3.1-70B-Instruct',
+      temperature: 0.2,
+      configuration: {
+        baseURL:
+          process.env.NEBIUS_BASE_URL ?? 'https://api.studio.nebius.ai/v1/',
+      },
+    });
+  }
+}

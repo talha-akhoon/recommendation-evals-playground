@@ -3,7 +3,7 @@ import { traceable } from 'langsmith/traceable';
 import { headphonesScenario } from '../scenarios/headphones.scenario.js';
 import { promptModes } from '../prompts/prompt-modes.js';
 import { mockModels } from './mock-models.js';
-import { OpenAIModel, AnthropicModel } from './llm-models.js';
+import { OpenAIModel, AnthropicModel, NebiusModel } from './llm-models.js';
 import { judgeClaimsWithLLM } from './llm-judge.js';
 import {
   calcRecommendationShift,
@@ -28,6 +28,11 @@ function buildModelRegistry(): Record<string, ModelRunner> {
 
   if (process.env.ANTHROPIC_API_KEY) {
     const m = new AnthropicModel();
+    registry[m.id] = m;
+  }
+
+  if (process.env.NEBIUS_API_KEY) {
+    const m = new NebiusModel();
     registry[m.id] = m;
   }
 
