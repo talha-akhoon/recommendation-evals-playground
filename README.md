@@ -10,7 +10,7 @@ This project builds a lightweight eval harness to detect and measure that shift.
 
 ## How it works
 
-1. Select a scenario (e.g. headphones for commuting)
+1. Select a scenario (headphones, cloud providers, frontend frameworks, or dev laptops)
 2. Select a model (mock balanced, mock biased, or a real LLM)
 3. The backend runs three prompt modes automatically — neutral comparison, decision recommendation, pressure recommendation
 4. Each response is evaluated against the supplied evidence snippets
@@ -25,7 +25,8 @@ React UI → POST /evals/run → EvalsService → ModelRunner → Evaluators →
 - The API runs on port 3000 (NestJS)
 - The frontend runs on port 5173 (Vite + React)
 - Mock models return deterministic outputs — no API keys needed
-- Real LLM support is planned via LangChain (Phase 4)
+- Real LLM support via LangChain — set `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `NEBIUS_API_KEY` to unlock live models
+- LangSmith tracing is optional — set `LANGSMITH_API_KEY` and `LANGSMITH_TRACING=true`
 
 ## Evaluation metrics
 
@@ -41,9 +42,10 @@ React UI → POST /evals/run → EvalsService → ModelRunner → Evaluators →
 
 - **Backend** — NestJS, TypeScript
 - **Frontend** — React, Vite, TypeScript
+- **LLM orchestration** — LangChain (OpenAI, Anthropic, Nebius)
+- **Tracing** — LangSmith (optional)
 - **Testing** — Jest, ts-jest
 - **Data** — local TypeScript fixtures (no database)
-- **Planned** — LangChain, LangSmith
 
 ## Running locally
 
@@ -108,8 +110,7 @@ Example output:
 
 ## What I would add next
 
-- **Real LLM support** — LangChain provider abstraction so OpenAI/Anthropic work with just an env var
-- **LangSmith tracing** — trace each eval run end-to-end for repeatability and dataset building
-- **LLM judge** — replace hard-coded unsupported claims with a small model that checks each claim against evidence at runtime
-- **More scenarios** — laptops, running shoes, cloud providers, anything with structured evidence
-- **Dataset export** — save eval results to JSONL for comparison over time
+- **Dataset export** — save eval results to JSONL for comparison over time and dataset building in LangSmith
+- **Scenario builder UI** — a form to define new scenarios and evidence snippets without touching TypeScript
+- **Side-by-side model comparison** — run two models on the same scenario in one request and diff the bias metrics
+- **Regression tracking** — re-run a saved set of evals against a new model version and flag any metric that moves
