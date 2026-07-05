@@ -1,6 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { traceable } from 'langsmith/traceable';
 import { headphonesScenario } from '../scenarios/headphones.scenario.js';
+import { cloudScenario } from '../scenarios/cloud.scenario.js';
+import { frameworksScenario } from '../scenarios/frameworks.scenario.js';
+import { laptopsScenario } from '../scenarios/laptops.scenario.js';
 import { promptModes } from '../prompts/prompt-modes.js';
 import { mockModels } from './mock-models.js';
 import { OpenAIModel, AnthropicModel, NebiusModel } from './llm-models.js';
@@ -21,6 +24,9 @@ import type { ModelRunner } from './model-runner.js';
 
 const scenarios: Record<string, Scenario> = {
   [headphonesScenario.id]: headphonesScenario,
+  [cloudScenario.id]: cloudScenario,
+  [frameworksScenario.id]: frameworksScenario,
+  [laptopsScenario.id]: laptopsScenario,
 };
 
 function buildModelRegistry(): Record<string, ModelRunner> {
@@ -85,7 +91,7 @@ export class EvalsService {
           return Promise.all(
             outputs.map(async (output) => ({
               ...output,
-              claims: await judgeClaimsWithLLM(output.claims, allEvidence),
+              claims: await judgeClaimsWithLLM(output.claims, allEvidence, modelId),
             })),
           );
         }
