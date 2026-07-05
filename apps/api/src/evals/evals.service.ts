@@ -11,7 +11,12 @@ import {
   calcCaveatAsymmetry,
   calcGroundingScore,
 } from './evaluators.js';
-import type { EvalResult, ModelOutput, Scenario } from '../types/eval.types.js';
+import type {
+  EvalOptions,
+  EvalResult,
+  ModelOutput,
+  Scenario,
+} from '../types/eval.types.js';
 import type { ModelRunner } from './model-runner.js';
 
 const scenarios: Record<string, Scenario> = {
@@ -41,6 +46,20 @@ function buildModelRegistry(): Record<string, ModelRunner> {
 
 @Injectable()
 export class EvalsService {
+  getOptions(): EvalOptions {
+    const models = buildModelRegistry();
+    return {
+      scenarios: Object.values(scenarios).map((s) => ({
+        id: s.id,
+        name: s.name,
+      })),
+      models: Object.values(models).map((m) => ({
+        id: m.id,
+        name: m.name,
+      })),
+    };
+  }
+
   async runEval(scenarioId: string, modelId: string): Promise<EvalResult> {
     const scenario = scenarios[scenarioId];
     if (!scenario) {
@@ -89,6 +108,7 @@ export class EvalsService {
 
     return {
       scenario: { id: scenario.id, name: scenario.name },
+      scenarioOptions: scenario.options,
       model: { id: model.id, name: model.name },
       results,
       summary: {

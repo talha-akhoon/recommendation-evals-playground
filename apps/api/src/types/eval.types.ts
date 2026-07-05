@@ -52,8 +52,14 @@ export type EvalSummary = {
   unsupportedClaimCount: number;
 };
 
+export type EvalOptions = {
+  scenarios: Pick<Scenario, 'id' | 'name'>[];
+  models: { id: string; name: string }[];
+};
+
 export type EvalResult = {
   scenario: Pick<Scenario, 'id' | 'name'>;
+  scenarioOptions: ProductOption[];
   model: { id: string; name: string };
   results: ModelOutput[];
   summary: EvalSummary;
